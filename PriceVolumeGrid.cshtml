@@ -1,0 +1,163 @@
+﻿@model IEnumerable<VolumeBreakOut.Models.GroupName>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    WebGrid webgrid = new WebGrid(source: Model, canPage: false);
+}
+
+
+
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+    </script>
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <link href="~/css/starter-template.css" rel="stylesheet" type="text/css">
+    <link href="~/css/style.css" rel="stylesheet" type="text/css">
+    <link href="~/css/bootstrap-toggle.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+    @*<link href="~/css/page-loading.css" rel="stylesheet" />*@
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+
+
+  
+    
+
+
+    <style>
+
+
+
+        .grid {
+            width: 1000px;
+            background-color: #FFF;
+            border: solid 1px #CD6736;
+            padding: 40px;
+        }
+
+
+
+            .grid td, th {
+                padding: 7px;
+                border: solid 1px #000;
+                text-align: center;
+                text-transform: capitalize;
+            }
+
+        .grid-header {
+            color: #FFF;
+            text-align: left;
+        }
+
+        .grid-footer {
+            color: #000;
+            font: 15px Calibri;
+            text-align: left;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $('#mstHeads').dataTable();
+        });
+
+    </script>
+</head>
+<body>
+    @using (Html.BeginForm("PriceVolumeGrid", "Home", FormMethod.Post, new { @Id = "WebGridForm" }))
+    {
+        <div class="container" style="margin-top:30px;">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+
+                        @Html.DropDownList("volgrp", (IEnumerable<SelectListItem>)ViewBag.volgrp, new { @id = "ddlVolgroup", @class = "volgroup  form-control input-group", @style = "width:210px; height:30px;" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        @Html.DropDownList("Volume3", ViewBag.Volume3 as SelectList, new { @class = "form-control select2_single input-group", @tabindex = "-1", @style = "width:210px;height:30px;" })
+
+                        @*<select name="Volume3" id="ddVol3">
+                                <option value="">--Select Option--</option>
+                                @{
+                                    string[] Volumetypes = System.Configuration.ConfigurationManager.AppSettings["Vol3"].ToString().Split(',');
+                                    foreach (string fn in Volumetypes)
+                                    {
+                                        <option value="@fn" id="ddVol3">@fn</option>
+                                    }
+                                }
+                            </select>*@
+
+                    </div>
+                </div>
+
+
+                <div class="col-md-2 ">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success" name="command" value="Insert" id="btnSubmit">SEARCH</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+
+
+    <div id="container-grid" style=" padding:20px; ">
+        @webgrid.GetHtml(
+ rowStyle: "gridrow",
+alternatingRowStyle: "gridrow_alternate",
+tableStyle: "grid",
+headerStyle: "grid-header",
+footerStyle: "grid-footer",
+
+columns: webgrid.Columns(
+
+    webgrid.Column("Stack_Name", "Stock Name"),
+    webgrid.Column("Last_price", "Last price"),
+    webgrid.Column("Change1", "Change "),
+    webgrid.Column("Percent_Change", "Percent Change"),
+    webgrid.Column("Close", "Close"),
+    webgrid.Column("High", "Day High"),
+    webgrid.Column("Low", "Day Low"),
+    webgrid.Column("Acc_Volume", "Acc_Volume")
+
+)
+)
+    </div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+
+
+                $('#ddlVolgroup').change(function () {
+        var url = '@Url.Action("GetJsonVolgrp")';
+        $.get(url, { volgrp : $(this).val() }, function(result) {
+            $('#container-grid').html(result);
+        });
+                });
+
+
+    </script>
+
+
+</body>
+</html>
+

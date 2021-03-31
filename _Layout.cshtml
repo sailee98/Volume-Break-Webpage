@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title -VolumeBreak</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+
+            <a class="nav navbar-nav  pull-left" href="#">
+                <img src="~/Images/LOGO.png" width="45" height="45" class="d-inline-block align-top" alt="Volume Break" style="margin-top:3px;">
+            </a>
+            &nbsp
+
+            <div class="navbar-header" style="color:white;margin-top:10px;font-size:20px;font-family:sans-serif;padding-left:32px;">
+                Volume Break
+            </div>
+
+
+
+            <div class="nav navbar-nav  pull-right" id="#rightside">
+
+                <input type="button" name="Logout" value="Logout" class="btn  btn-danger" style="margin-top:7px;" onclick="location.href='@Url.Action("Logout", "Login")'" />
+            </div>
+        </div>
+            </div>
+       
+   
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - ETNOW </p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
